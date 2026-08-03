@@ -929,6 +929,14 @@ button { cursor: pointer; border: none; background: none; }
   background: rgba(244,124,32,.1);
   color: var(--orange-dark);
 }
+.tag--focus {
+  background: rgba(20,184,166,.12);
+  color: #0d9488;
+}
+.tag--ite {
+  background: rgba(168,85,247,.12);
+  color: #9333ea;
+}
 .course-card__cta {
   display: inline-flex;
   font-size: .85rem;
