@@ -9,6 +9,7 @@ const mobileOverlay = document.getElementById('mobile-overlay');
 const mobileLinks = document.querySelectorAll('.mobile-nav__link');
 
 function openMenu() {
+  if (!hamburger || !mobileOverlay) return;
   hamburger.classList.add('open');
   mobileOverlay.classList.add('open');
   mobileOverlay.setAttribute('aria-hidden', 'false');
@@ -17,6 +18,7 @@ function openMenu() {
 }
 
 function closeMenu() {
+  if (!hamburger || !mobileOverlay) return;
   hamburger.classList.remove('open');
   mobileOverlay.classList.remove('open');
   mobileOverlay.setAttribute('aria-hidden', 'true');
@@ -24,13 +26,15 @@ function closeMenu() {
   document.body.style.overflow = '';
 }
 
-hamburger.addEventListener('click', () => {
-  if (hamburger.classList.contains('open')) {
-    closeMenu();
-  } else {
-    openMenu();
-  }
-});
+if (hamburger) {
+  hamburger.addEventListener('click', () => {
+    if (hamburger.classList.contains('open')) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  });
+}
 
 mobileLinks.forEach(link => {
   link.addEventListener('click', closeMenu);
@@ -44,6 +48,7 @@ document.addEventListener('keydown', (e) => {
 // ---- Sticky Header Shadow ----
 const header = document.getElementById('header');
 function onScroll() {
+  if (!header) return;
   if (window.scrollY > 10) {
     header.classList.add('scrolled');
   } else {
@@ -119,25 +124,52 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 // ---- Gallery Lightbox ----
 const galleryItems = document.querySelectorAll('.gallery__item');
 
+function escapeHtml(value) {
+  return String(value).replace(/[&<>'"]/g, char => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    "'": '&#39;',
+    '"': '&quot;'
+  }[char]));
+}
+
+function openGalleryItem(item) {
+  const img = item.querySelector('img');
+  if (!img) return;
+  const caption = item.querySelector('.gallery__caption');
+  openLightbox(img.src, img.alt, caption ? caption.textContent : '');
+}
+
 galleryItems.forEach(item => {
-  item.addEventListener('click', () => {
-    const img = item.querySelector('img');
-    const caption = item.querySelector('.gallery__caption');
-    openLightbox(img.src, img.alt, caption ? caption.textContent : '');
+  const img = item.querySelector('img');
+  item.setAttribute('role', 'button');
+  item.setAttribute('tabindex', '0');
+  item.setAttribute('aria-label', `Open gallery image${img && img.alt ? `: ${img.alt}` : ''}`);
+
+  item.addEventListener('click', () => openGalleryItem(item));
+  item.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      openGalleryItem(item);
+    }
   });
 });
 
 function openLightbox(src, alt, caption) {
   const lightbox = document.createElement('div');
   lightbox.className = 'lightbox';
+  lightbox.setAttribute('role', 'dialog');
+  lightbox.setAttribute('aria-modal', 'true');
+  lightbox.setAttribute('aria-label', caption || alt || 'Gallery image');
   lightbox.innerHTML = `
     <div class="lightbox__backdrop"></div>
     <div class="lightbox__content">
-      <button class="lightbox__close" aria-label="Close">
+      <button class="lightbox__close" aria-label="Close gallery image">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
-      <img src="${src}" alt="${alt}" class="lightbox__img" />
-      <p class="lightbox__caption">${caption}</p>
+      <img src="${escapeHtml(src)}" alt="${escapeHtml(alt)}" class="lightbox__img" />
+      <p class="lightbox__caption">${escapeHtml(caption)}</p>
     </div>
   `;
   document.body.appendChild(lightbox);
@@ -149,19 +181,30 @@ function openLightbox(src, alt, caption) {
     lightbox.querySelector('.lightbox__content').style.transform = 'scale(1)';
   });
 
+  const closeButton = lightbox.querySelector('.lightbox__close');
+  const backdrop = lightbox.querySelector('.lightbox__backdrop');
+  const previouslyFocused = document.activeElement;
+
   function closeLightbox() {
     lightbox.style.opacity = '0';
+    document.removeEventListener('keydown', handleLightboxKeydown);
     setTimeout(() => {
       lightbox.remove();
       document.body.style.overflow = '';
+      if (previouslyFocused && typeof previouslyFocused.focus === 'function') {
+        previouslyFocused.focus();
+      }
     }, 300);
   }
 
-  lightbox.querySelector('.lightbox__backdrop').addEventListener('click', closeLightbox);
-  lightbox.querySelector('.lightbox__close').addEventListener('click', closeLightbox);
-  document.addEventListener('keydown', function handler(e) {
-    if (e.key === 'Escape') { closeLightbox(); document.removeEventListener('keydown', handler); }
-  });
+  function handleLightboxKeydown(e) {
+    if (e.key === 'Escape') closeLightbox();
+  }
+
+  backdrop.addEventListener('click', closeLightbox);
+  closeButton.addEventListener('click', closeLightbox);
+  document.addEventListener('keydown', handleLightboxKeydown);
+  closeButton.focus();
 }
 
 // Inject lightbox styles

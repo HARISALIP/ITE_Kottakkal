@@ -1164,7 +1164,12 @@ button { cursor: pointer; border: none; background: none; }
   object-fit: cover;
   transition: transform .5s ease;
 }
-.gallery__item:hover img { transform: scale(1.07); }
+.gallery__item:hover img,
+.gallery__item:focus-visible img { transform: scale(1.07); }
+.gallery__item:focus-visible {
+  outline: 3px solid var(--orange);
+  outline-offset: 4px;
+}
 .gallery__caption {
   position: absolute;
   bottom: 0;
@@ -1178,7 +1183,8 @@ button { cursor: pointer; border: none; background: none; }
   transform: translateY(100%);
   transition: transform var(--transition);
 }
-.gallery__item:hover .gallery__caption { transform: translateY(0); }
+.gallery__item:hover .gallery__caption,
+.gallery__item:focus-visible .gallery__caption { transform: translateY(0); }
 
 /* ---------- CONTACT ---------- */
 .contact {
