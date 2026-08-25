@@ -1530,30 +1530,8 @@ button { cursor: pointer; border: none; background: none; }
   .hero__quote { display: none; }
 }
 
-/* ---------- 500px — Fix hero call button overflow ---------- */
+/* ---------- 500px — Fix mobile container padding ---------- */
 @media (max-width: 500px) {
-  #hero-call-btn {
-    flex-direction: column;
-    align-items: center;
-    gap: .3rem;
-    font-size: .78rem;
-    padding: .75rem 1rem;
-    line-height: 1.5;
-    text-align: center;
-    white-space: normal;
-    word-break: break-word;
-    max-width: 100%;
-    box-sizing: border-box;
-    height: auto;
-  }
-  #hero-call-btn .call-primary {
-    font-size: .85rem;
-    font-weight: 700;
-  }
-  #hero-call-btn .call-secondary {
-    font-size: .72rem;
-    opacity: .85;
-  }
   .container {
     padding: 0 16px;
   }
