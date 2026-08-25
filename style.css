@@ -1410,10 +1410,10 @@ button { cursor: pointer; border: none; background: none; }
   color: rgba(255,255,255,.4);
 }
 
-/* ---------- FLOATING WHATSAPP ---------- */
+/* ---------- FLOATING BUTTONS ---------- */
 .float-wa {
   position: fixed;
-  bottom: 2rem;
+  bottom: 6.5rem;
   right: 2rem;
   z-index: 900;
   width: 60px;
@@ -1447,6 +1447,43 @@ button { cursor: pointer; border: none; background: none; }
   transition: opacity var(--transition);
 }
 .float-wa:hover .float-wa__tooltip { opacity: 1; }
+
+.float-call {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 900;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 28px rgba(59,130,246,.5);
+  transition: var(--transition);
+}
+.float-call:hover {
+  transform: scale(1.1) translateY(-3px);
+  box-shadow: 0 14px 40px rgba(59,130,246,.6);
+}
+.float-call__tooltip {
+  position: absolute;
+  right: 72px;
+  background: var(--white);
+  color: var(--navy);
+  font-size: .8rem;
+  font-weight: 600;
+  padding: .4rem .9rem;
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-md);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition);
+}
+.float-call:hover .float-call__tooltip { opacity: 1; }
 
 /* ======================================================
    RESPONSIVE — TABLET & MOBILE
