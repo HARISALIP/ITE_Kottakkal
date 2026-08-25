@@ -574,8 +574,8 @@ button { cursor: pointer; border: none; background: none; }
   gap: 2.5rem;
 }
 .campus-banner__icon-ring {
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--navy), var(--navy-light));
   display: flex;
