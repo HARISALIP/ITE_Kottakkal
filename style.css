@@ -144,6 +144,15 @@ button { cursor: pointer; border: none; background: none; }
   transform: translateY(-2px);
   box-shadow: 0 8px 28px rgba(37,211,102,.45);
 }
+.btn--blue {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: var(--white);
+  box-shadow: 0 4px 18px rgba(59,130,246,.3);
+}
+.btn--blue:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(59,130,246,.45);
+}
 .btn--glass {
   background: rgba(255,255,255,.15);
   color: var(--white);
